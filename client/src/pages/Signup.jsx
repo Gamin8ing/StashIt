@@ -26,6 +26,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../App"; // Import AuthContext
+
 const signupValidationSchema = Yup.object().shape({
 	name: Yup.string()
 		.min(2, "Name is too short")
@@ -51,6 +54,9 @@ const SignupForm = () => {
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
+
+	const { setIsAuthenticated, setUser } = useAuth();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (errorMessage) {
@@ -95,9 +101,14 @@ const SignupForm = () => {
 										email: values.email,
 										password: values.password,
 									});
-									if (response)
+									if (response) {
 										setSuccessMessage("Account created successfully!");
-									resetForm();
+										setIsAuthenticated(true);
+										setUser(response.data.user);
+										resetForm();
+										setSubmitting("false");
+										navigate("/dashboard");
+									}
 								} catch (error) {
 									setErrorMessage(
 										error.response?.data?.message ||

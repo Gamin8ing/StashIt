@@ -22,6 +22,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../App"; // Import AuthContext
+
 // Validation schema for Login
 const loginValidationSchema = Yup.object().shape({
 	email: Yup.string()
@@ -36,6 +39,9 @@ const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
+
+	const { setIsAuthenticated, setUser } = useAuth();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (errorMessage) {
@@ -71,7 +77,12 @@ const LoginForm = () => {
 							onSubmit={async (values, { setSubmitting }) => {
 								try {
 									const response = await axios.post("/api/login", values);
-									if (response) setSuccessMessage("Login successful!");
+									if (response) {
+										setSuccessMessage("Login successful!");
+										setIsAuthenticated(true);
+										setUser(response.data.user);
+										navigate("/dashboard");
+									}
 								} catch (error) {
 									setErrorMessage(
 										error.response?.data?.message ||
@@ -146,6 +157,13 @@ const LoginForm = () => {
 											/>
 										)}
 									</Field>
+
+									<a
+										href="/forgot-password"
+										className="block text-right text-blue-600"
+									>
+										Forgot Password
+									</a>
 
 									<Button
 										type="submit"
