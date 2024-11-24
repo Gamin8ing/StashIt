@@ -3,16 +3,20 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function ResetPassword() {
-	const { token } = useParams();
+	const { token, email } = useParams();
+	const the = useParams();
+	console.log("token: " + token);
+	console.log(the);
 	const [password, setPassword] = useState("");
 	const [message, setMessage] = useState("");
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		console.log(email + password + token);
 		try {
 			const response = await axios.post(
-				`http://localhost:5000/api/v4/users/reset-password?${token}`,
-				{ password }
+				`http://localhost:3000/api/v1/users/reset-password`,
+				{ email, token, password }
 			);
 			setMessage(response.data.message);
 		} catch (error) {

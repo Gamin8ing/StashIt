@@ -27,7 +27,7 @@ const QrReader = () => {
 		// 😎 You can do whatever you want with the scanned result.
 		setScannedResult(result?.data);
 		const d = JSON.parse(result?.data);
-
+		console.log(d);
 		if (d?.valid === "Yes") {
 			console.log("Lets go");
 			navigate("/products/new", { state: { productData: d } });
