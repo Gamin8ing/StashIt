@@ -32,18 +32,21 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the Repository**
 
-   ```bash
-   git clone https://github.com/Gamin8ing/StashIt.git
-   cd stashit
-   ```
+```bash
+git clone https://github.com/Gamin8ing/StashIt.git
+cd stashit
+```
 
 2. **Navigate to the Backend Directory**
 
    ```bash
    cd Backend
+   npm i
    ```
 
 3. **Install Backend Dependencies**
+
+   Make sure proxy is configured for npm, if on proxy.
 
    ```bash
    npm install
